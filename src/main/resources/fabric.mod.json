@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "id": "starter",
+  "id": "chase",
   "version": "${version}",
 
-  "name": "Fabric Starter",
+  "name": "Chase",
   "icon": "assets/starter/icon.png",
-  "description": "Template for starting out Fabric mods",
+  "description": "Library for simpler creation of small content mods",
   "license": "MIT",
   "contact": {
-    "sources": "https://github.com/CottonMC/FabricStarter"
+    "sources": "https://github.com/Boundarybreaker/Chase"
   },
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.cottonmc.starter.FabricStarter"
+      "space.bbkr.chase.Chase"
     ]
   },
   "mixins": [

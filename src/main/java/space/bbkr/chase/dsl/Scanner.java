@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.moandjiezana.toml.Toml;
-
 import net.minecraft.util.Identifier;
+import org.tomlj.Toml;
 
 public class Scanner {
 	private static final Map<String, TokenType> keywords = new HashMap<>();
 
+	private final ChaseEngine engine;
 	private final String source;
 	private final List<Token> tokens = new ArrayList<>();
 
@@ -22,7 +22,8 @@ public class Scanner {
 	private int line;
 	private int column;
 
-	public Scanner(String source) {
+	public Scanner(ChaseEngine engine, String source) {
+		this.engine = engine;
 		this.source = source;
 	}
 
@@ -78,7 +79,7 @@ public class Scanner {
 				break;
 			case '!':
 				if (match('=')) addToken(BANG_EQUAL);
-				else throw new SyntaxError(line, column, "'!' must be followed by '='"); //TODO: change me
+				else engine.error(line, column, "'!' must be followed by '='");
 				break;
 			case '=':
 				addToken(match('=')? EQUAL_EQUAL : EQUAL);
@@ -113,7 +114,7 @@ public class Scanner {
 				} else if (isAlpha(c)) {
 					key();
 				} else {
-					throw new SyntaxError(line, column, "Illegal character '" + c + "'"); //TODO: change me
+					engine.error(line, column, "Illegal character '" + c + "'");
 				}
 		}
 	}
@@ -161,7 +162,8 @@ public class Scanner {
 		}
 
 		if (isAtEnd()) {
-			throw new SyntaxError(line, column, "Unterminated string"); //TODO: change me
+			engine.error(line, column, "Unterminated string");
+			return;
 		}
 
 		//closing quote
@@ -181,14 +183,14 @@ public class Scanner {
 		}
 
 		if (isAtEnd()) {
-			throw new SyntaxError(line, column, "Unterminated TOML literal"); //TODO: change me
+			engine.error(line, column, "Unterminated TOML literal");
 		}
 
 		//closing quote
 		advance();
 
 		String value = source.substring(start + 1, current - 1);
-		addToken(TOML, new Toml().read(value));
+		addToken(TOML, Toml.parse(value));
 	}
 
 	private boolean isDigit(char c) {
@@ -200,7 +202,6 @@ public class Scanner {
 		boolean isFloat = false;
 
 		//look for a decimal
-
 		if (peek() == '.' && isDigit(peekNext())) {
 			isFloat = true;
 			advance();

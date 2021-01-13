@@ -3,12 +3,12 @@ package space.bbkr.chase;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import space.bbkr.chase.dsl.Scanner;
+import space.bbkr.chase.dsl.ChaseEngine;
 
 public class Chase implements ModInitializer {
 	public static final String MODID = "chase";
 
-	public static final Logger logger = LogManager.getLogger();
+	public static final Logger logger = LogManager.getLogger(MODID);
 
 	@Override
 	public void onInitialize() {
@@ -35,6 +35,6 @@ public class Chase implements ModInitializer {
 				"[object]\n" +
 				"key = \"value\"\n" +
 				"`";
-		System.out.println(new Scanner(code).scanTokens());
+		new ChaseEngine().execute(code);
 	}
 }

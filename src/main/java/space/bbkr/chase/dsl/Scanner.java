@@ -264,5 +264,6 @@ public class Scanner {
 		keywords.put("parent", PARENT);
 		keywords.put("while", WHILE);
 		keywords.put("break", BREAK);
+		keywords.put("for", FOR);
 	}
 }

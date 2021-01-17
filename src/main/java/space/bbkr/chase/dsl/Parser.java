@@ -5,11 +5,21 @@ import static space.bbkr.chase.dsl.TokenType.*;
 import java.util.List;
 
 class Parser {
+	private final ChaseEngine engine;
 	private final List<Token> tokens;
 	private int current = 0;
 
-	Parser(List<Token> tokens) {
+	Parser(ChaseEngine engine, List<Token> tokens) {
+		this.engine = engine;
 		this.tokens = tokens;
+	}
+
+	Expression parse() {
+		try {
+			return expression();
+		} catch (ParseError error) {
+			return null;
+		}
 	}
 
 	private Expression expression() {
@@ -88,6 +98,8 @@ class Parser {
 			consume(RIGHT_PAREN, "Expect ')' after expression");
 			return new Expression.GroupingExpression(expression);
 		}
+
+		throw error(peek(), "Expect expression");
 	}
 
 	private boolean match(TokenType... types) {
@@ -127,5 +139,30 @@ class Parser {
 
 	private Token previous() {
 		return tokens.get(current - 1);
+	}
+
+	private ParseError error(Token token, String message) {
+		engine.error(token, message);
+		return new ParseError();
+	}
+
+	private static class ParseError extends RuntimeException {}
+
+	private void synchronize() {
+		advance();
+
+		while (!isAtEnd()) {
+			if (previous().type == SEMICOLON || previous().type == LF) return;
+
+			switch (peek().type) {
+				case FOR:
+				case IF:
+				case WHILE:
+				case RETURN:
+					return;
+			}
+
+			advance();
+		}
 	}
 }

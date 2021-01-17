@@ -6,7 +6,7 @@ interface ChaseType {
 	ChaseType FLOAT = new PrimitiveType();
 	ChaseType BOOLEAN = new PrimitiveType();
 	ChaseType IDENTIFIER = new PrimitiveType();
-	ChaseType STRING = new PrimitiveType(); //TODO: array - pythonic list comprehension
+	ChaseType STRING = new PrimitiveType(); //TODO: array - pythonic list comprehension?
 	ChaseType TOML = new PrimitiveType(); //TODO: proper impl
 	//TODO: lists, system types, etc.
 

@@ -217,7 +217,7 @@ public class Scanner {
 		boolean isIdentifier = false;
 		while (isAlphaNumeric(peek())) advance();
 
-		if (match ('-') || match(':')) {
+		if (match ('-') || match(':')) { //TODO: potential issue with subtraction?
 			isIdentifier = true;
 			while (isPath(peek())) advance();
 		}

@@ -1,4 +1,4 @@
-package space.bbkr.chase.dsl;
+package space.bbkr.chase.lang.impl;
 
 import space.bbkr.chase.Chase;
 

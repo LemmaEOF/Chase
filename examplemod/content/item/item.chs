@@ -1,0 +1,40 @@
+# Part of the Chase Standard lib, at `chase:item/item`
+# Only components essential for the sample script are currently included
+
+abstract from chase:__builtin__/item # Builtins can only ever be parents, not imported, and children must have the same namespace
+
+import `chase:inventory/item_group` as ItemGroup
+import `chase:util/registry` as Registry
+import `chase:world/world` as World
+import `chase:entity/player` as Player
+import `chase:util/hand` as Hand
+import `chase:item/item_stack` as ItemStack
+import `chase:util/action_result` as ActionResult
+
+# The group the item goes into in the inventory
+optional ITEM_GROUP: ItemGroup
+
+# The max number of this item that fit in a stack
+optional MAX_COUNT: int
+
+# The max amount of damage this item can take
+# DO NOT SET BOTH THIS AND MAX_COUNT! IT IS ILLEGAL AND WILL CRASH!
+optional MAX_DAMAGE: int
+
+# The rarity of this item by default
+optional RARITY: Item.Rarity
+
+# Called whenever you right-click in the air with this item
+# world = the world this is happening in
+# player = the player using the item
+# hand = the hand (main or off) the player is using the item with
+# stack = the stack being used
+optional use: function with world: World, player: Player, hand: Hand, stack: ItemStack -> ActionResult.Typed
+
+# Called when the game is ready to execute code
+# This makes it so that the end user doesn't have to call a registration themselves
+# __parent__ lets you call hidden methods that aren't shared to further children
+# TODO: add a way to construct new items from children of `chase:item/item`
+{__init__}:
+    Registry.register(Registry.ITEM, __self__.get_id().trim_path("items/"), __parent__.new(__self__))
+;

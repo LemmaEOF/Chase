@@ -1,9 +1,14 @@
-package space.bbkr.chase.dsl;
+package space.bbkr.chase.lang.impl;
 
-import static space.bbkr.chase.dsl.TokenType.*;
+import net.minecraft.util.Identifier;
+import space.bbkr.chase.lang.api.*;
+import space.bbkr.chase.lang.api.type.ChaseType;
+
+import static space.bbkr.chase.lang.impl.TokenType.*;
 
 import java.util.List;
 
+//TODO: statements, data
 class Parser {
 	private final ChaseEngine engine;
 	private final List<Token> tokens;
@@ -85,12 +90,12 @@ class Parser {
 	}
 
 	private Expression primary() {
-		if (match(FALSE)) return new Expression.LiteralExpression(false);
-		if (match(TRUE)) return new Expression.LiteralExpression(true);
-		if (match(NULL)) return new Expression.LiteralExpression(null);
+		if (match(FALSE)) return new Expression.LiteralExpression(ChaseType.BOOLEAN, new ChaseBoolean(false));
+		if (match(TRUE)) return new Expression.LiteralExpression(ChaseType.BOOLEAN, new ChaseBoolean(true));
+		if (match(NULL)) return new Expression.LiteralExpression(ChaseType.NULL, null);
 
-		if (match(INT, FLOAT, STRING, IDENTIFIER, TOML)) {
-			return new Expression.LiteralExpression(previous().literal);
+		if (match(INT, FLOAT, STRING, IDENTIFIER)) {
+			return new Expression.LiteralExpression(typeForToken(previous().type), objectForLiteral(previous()));
 		}
 
 		if (match(LEFT_PAREN)) {
@@ -152,7 +157,7 @@ class Parser {
 		advance();
 
 		while (!isAtEnd()) {
-			if (previous().type == SEMICOLON || previous().type == LF) return;
+			if (previous().type == END || previous().type == LF) return;
 
 			switch (peek().type) {
 				case FOR:
@@ -164,5 +169,25 @@ class Parser {
 
 			advance();
 		}
+	}
+
+	private ChaseType typeForToken(TokenType type) {
+		switch(type) {
+			case INT: return ChaseType.INT;
+			case FLOAT: return ChaseType.FLOAT;
+			case STRING: return ChaseType.STRING;
+			case IDENTIFIER: return ChaseType.IDENTIFIER;
+		}
+		return ChaseType.NULL;
+	}
+
+	private ChaseObject objectForLiteral(Token literal) {
+		switch (literal.type) {
+			case INT: return new ChaseInt((int) literal.literal);
+			case FLOAT: return new ChaseFloat((double) literal.literal);
+			case STRING: return new ChaseString((String) literal.literal);
+			case IDENTIFIER: return new ChaseIdentifier((Identifier) literal.literal);
+		}
+		return ChaseNull.INSTANCE;
 	}
 }

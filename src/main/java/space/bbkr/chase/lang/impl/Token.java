@@ -1,4 +1,4 @@
-package space.bbkr.chase.dsl;
+package space.bbkr.chase.lang.impl;
 
 class Token {
 	final TokenType type;

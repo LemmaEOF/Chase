@@ -29,10 +29,6 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
-
-	compile "org.tomlj:tomlj:1.0.0"
-	include "org.tomlj:tomlj:1.0.0"
-
 }
 
 processResources {

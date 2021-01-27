@@ -1,14 +1,13 @@
-package space.bbkr.chase.dsl;
+package space.bbkr.chase.lang.impl;
 
-import static space.bbkr.chase.dsl.TokenType.*;
+import static space.bbkr.chase.lang.impl.TokenType.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.util.Identifier;
-import org.tomlj.Toml;
+import sun.tools.jstat.Identifier;
 
 public class Scanner {
 	private static final Map<String, TokenType> keywords = new HashMap<>();
@@ -44,6 +43,12 @@ public class Scanner {
 	private void scanToken() {
 		char c = advance();
 		switch (c) {
+			case '{':
+				addToken(LEFT_BRACE);
+				break;
+			case '}':
+				addToken(RIGHT_BRACE);
+				break;
 			case '[':
 				addToken(LEFT_BRACKET);
 				break;
@@ -74,8 +79,8 @@ public class Scanner {
 			case '*':
 				addToken(STAR);
 				break;
-			case ';':
-				addToken(SEMICOLON);
+			case ':':
+				addToken(COLON);
 				break;
 			case '!':
 				if (match('=')) addToken(BANG_EQUAL);
@@ -97,7 +102,7 @@ public class Scanner {
 				string();
 				break;
 			case '`':
-				toml();
+				identifier();
 				break;
 			case '\n':
 				addToken(LF);
@@ -173,24 +178,16 @@ public class Scanner {
 		addToken(STRING, value);
 	}
 
-	private void toml() {
-		while (peek() != '`' && !isAtEnd()) {
-			if (peek() == '\n') {
-				line++;
-				column = 0;
-			}
-			advance();
-		}
+	private void identifier() {
+		while (isIdentifierSafe(peek())) advance();
 
-		if (isAtEnd()) {
-			engine.error(line, column, "Unterminated TOML literal");
-		}
+		//see if the identifier is a reserved word
+		String text = source.substring(start + 1, current - 1);
+		addToken(IDENTIFIER, new Identifier(text));
+	}
 
-		//closing quote
-		advance();
-
-		String value = source.substring(start + 1, current - 1);
-		addToken(TOML, Toml.parse(value));
+	private boolean isIdentifierSafe(char c) {
+		return isAlphanumeric(c) || c == '-' || c == '.' || c == '/' || c == ':';
 	}
 
 	private boolean isDigit(char c) {
@@ -214,22 +211,11 @@ public class Scanner {
 	}
 
 	private void key() {
-		boolean isIdentifier = false;
-		while (isAlphaNumeric(peek())) advance();
+		while (isAlphanumeric(peek())) advance();
 
-		if (match ('-') || match(':')) { //TODO: potential issue with subtraction?
-			isIdentifier = true;
-			while (isPath(peek())) advance();
-		}
-
+		//see if the identifier is a reserved word
 		String text = source.substring(start, current);
-		if (isIdentifier) {
-			addToken(IDENTIFIER, new Identifier(text));
-		} else {
-			TokenType type = keywords.get(text);
-			if (type == null) addToken(KEY, text);
-			addToken(type);
-		}
+		addToken(keywords.getOrDefault(text, IDENTIFIER));
 	}
 
 	private boolean isAlpha(char c) {
@@ -238,12 +224,8 @@ public class Scanner {
 				c == '_';
 	}
 
-	private boolean isAlphaNumeric(char c) {
+	private boolean isAlphanumeric(char c) {
 		return isAlpha(c) || isDigit(c);
-	}
-
-	private boolean isPath(char c) {
-		return isAlpha(c) || c == '/' || c == '-' || c == ':';
 	}
 
 	static {
@@ -265,5 +247,13 @@ public class Scanner {
 		keywords.put("while", WHILE);
 		keywords.put("break", BREAK);
 		keywords.put("for", FOR);
+		keywords.put("in", IN);
+		keywords.put("string", TYPE_STRING);
+		keywords.put("identifier", TYPE_IDENTIFIER);
+		keywords.put("int", TYPE_INT);
+		keywords.put("float", TYPE_FLOAT);
+		keywords.put("data", TYPE_DATA);
+		keywords.put("function", TYPE_FUNCTION);
+		keywords.put("end", END);
 	}
 }

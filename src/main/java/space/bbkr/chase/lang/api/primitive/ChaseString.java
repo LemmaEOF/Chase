@@ -1,6 +1,7 @@
-package space.bbkr.chase.lang.api;
+package space.bbkr.chase.lang.api.primitive;
 
 import org.jetbrains.annotations.Nullable;
+import space.bbkr.chase.lang.api.ChaseIterable;
 import space.bbkr.chase.lang.api.type.ChaseType;
 
 import java.util.ArrayList;

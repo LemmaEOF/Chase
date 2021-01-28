@@ -1,9 +1,9 @@
 package space.bbkr.chase.lang.api.type;
 
-import space.bbkr.chase.lang.api.ChaseFloat;
-import space.bbkr.chase.lang.api.ChaseInt;
+import space.bbkr.chase.lang.api.primitive.ChaseFloat;
+import space.bbkr.chase.lang.api.primitive.ChaseInt;
 import space.bbkr.chase.lang.api.ChaseObject;
-import space.bbkr.chase.lang.api.ChaseString;
+import space.bbkr.chase.lang.api.primitive.ChaseString;
 
 public class PrimitiveType implements ChaseType {
 

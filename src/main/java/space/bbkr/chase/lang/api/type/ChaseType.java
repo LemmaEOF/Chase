@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface ChaseType extends ChaseCallable {
 	ChaseType ANY = new PrimitiveType();
+	//TODO: this is a kludge and is *very* ugly (we have the Lexer evaluate the code to return the type and throw if it doesn't return a ChaseWrapper)
+	ChaseType JAVA_WRAPPER = new PrimitiveType();
 	ChaseType TYPE = new PrimitiveType(); //yee fucking haw
 	ChaseType NULL = new PrimitiveType();
 	ChaseType INT = new PrimitiveType();
@@ -38,7 +40,7 @@ public interface ChaseType extends ChaseCallable {
 	 }
 
 	@Override
-	default Map<String, ChaseType> getArgumentTypes() {
+	default Map<String, ChaseType> getParameterTypes() {
 		return Collections.singletonMap("other", ChaseType.ANY);
 	}
 

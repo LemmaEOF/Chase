@@ -34,7 +34,7 @@ optional use: function with world: World, player: Player, hand: Hand, stack: Ite
 # Called when the game is ready to execute code
 # This makes it so that the end user doesn't have to call a registration themselves
 # __parent__ lets you call hidden methods that aren't shared to further children
-# TODO: add a way to construct new items from children of `chase:item/item`
+# TODO: add a way to construct new items from children of `chase:item/item` for dynamic reg stuff
 {__init__}:
-    Registry.register(Registry.ITEM, __self__.get_id().trim_path("items/"), __parent__.new(__self__))
+    Registry.register(Registry.ITEM, __self__.get_id().trim_path("items/"), __parent__(__self__))
 ;

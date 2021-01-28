@@ -1,10 +1,12 @@
-package space.bbkr.chase.lang.api;
+package space.bbkr.chase.lang.api.primitive;
 
 
 import net.minecraft.util.Identifier;
+import space.bbkr.chase.lang.api.ChaseObject;
 import space.bbkr.chase.lang.api.type.ChaseType;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ChaseData extends HashMap<String, ChaseObject> implements ChaseObject {
 	@Override
@@ -16,7 +18,12 @@ public class ChaseData extends HashMap<String, ChaseObject> implements ChaseObje
 	public ChaseData getLiteralValue() {
 		return this;
 	}
-	
+
+	@Override
+	public Map<String, ChaseObject> getChildren() {
+		return this;
+	}
+
 	public ChaseObject putInt(String key, int value) {
 		return put(key, new ChaseInt(value));
 	}

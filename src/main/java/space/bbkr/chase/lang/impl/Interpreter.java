@@ -1,6 +1,10 @@
 package space.bbkr.chase.lang.impl;
 
 import space.bbkr.chase.lang.api.*;
+import space.bbkr.chase.lang.api.primitive.ChaseBoolean;
+import space.bbkr.chase.lang.api.primitive.ChaseFloat;
+import space.bbkr.chase.lang.api.primitive.ChaseInt;
+import space.bbkr.chase.lang.api.primitive.ChaseString;
 import space.bbkr.chase.lang.api.type.ChaseType;
 
 class Interpreter implements Expression.Visitor<ChaseObject> {

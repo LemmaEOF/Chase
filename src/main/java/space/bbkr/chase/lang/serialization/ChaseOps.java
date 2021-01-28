@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import space.bbkr.chase.lang.api.*;
+import space.bbkr.chase.lang.api.primitive.*;
 import space.bbkr.chase.lang.api.type.ChaseType;
 
 import java.util.Objects;

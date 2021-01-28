@@ -1,7 +1,8 @@
-package space.bbkr.chase.lang.api;
+package space.bbkr.chase.lang.api.primitive;
 
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import space.bbkr.chase.lang.api.ChaseObject;
 import space.bbkr.chase.lang.api.type.ChaseType;
 
 public class ChaseIdentifier implements ChaseObject {

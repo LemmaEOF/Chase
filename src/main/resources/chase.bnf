@@ -1,0 +1,12 @@
+line_end_comment:      /#[^$\n]*[$\n]/;
+whitespace:            /[\s\t]/;
+double_quoted_string:  /\"(?<value>[^\"\\]*(?:\\.)?)*\"/;
+identifier:            /\`(?<value>[a-z0-9\-\_]+\:[a-z0-9\-\_\/]+)\`/;
+token:                 /[a-zA-Z]+[a-zA-Z0-9]*/;
+newline_or_end:        /[\n$]/;
+equals_operator:      /=/;
+
+from_statement:  "from"   identifier ( line_end_comment | newline_or_end );
+import_statemnt: "import" identifier ( "as" token )? ( line_end_comment | newline_or_end );
+
+ignore whitespace;

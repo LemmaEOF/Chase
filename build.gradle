@@ -1,5 +1,5 @@
 plugins {
-	id "fabric-loom" version "0.5-SNAPSHOT"
+	id "fabric-loom" version "0.6-SNAPSHOT"
 	id "maven-publish"
 	id "com.jfrog.artifactory" version "4.15.2"
 }
@@ -19,8 +19,7 @@ minecraft {
 }
 
 repositories {
-	maven { url "https://server.bbkr.space/artifactory/libs-release" } // Cotton maven - home of Cotton projects
-	maven { url "https://dl.bintray.com/ladysnake/libs" } // Ladysnake maven - home of Cardinal Components
+	maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -29,6 +28,8 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+	implementation "com.github.falkreon:Jarser:92bca3c7dc"
+	include "com.github.falkreon:Jarser:92bca3c7dc"
 }
 
 processResources {

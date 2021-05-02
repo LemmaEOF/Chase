@@ -43,16 +43,16 @@ sample_obj = data:
     y = ["a", "b", "c"]
     in = data:
         why = false
-    ;
+    end
     data_array = [
         data:
             a = 3
-        ; # if there's an LF we don't need a comma
+        end # if there's an LF we don't need a comma
         data:
             a = 5
-        ;
+        end
     ]
-;
+end
 
 # Defining a function of our own requires explicit types
 test_func = function with player: Player, hand: Hand -> boolean:
